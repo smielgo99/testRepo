@@ -1,0 +1,930 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions targetNamespace="ParlayX" xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tns="ParlayX" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsd1="http://www.huawei.com/ParlayX.xsd1">
+ <wsdl:types>
+  <xsd:schema targetNamespace="ParlayX" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+   <xsd:complexType name="ParlayX.SimpleReferenceType">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="1" name="endpoint" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="interfaceName" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="correlator" nillable="true" type="xsd:string"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ParlayX.IpAddressType">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="0" name="ipv4" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="ipv6" nillable="true" type="xsd:string"/>    
+    </xsd:sequence>
+   </xsd:complexType>
+    <xsd:complexType name="ParlayX.OtherIdType">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="1" name="type" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="value" nillable="true" type="xsd:string"/>     
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ParlayX.UserIdType">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="1" name="phoneNumber" nillable="true" type="xsd:string"/>
+	 <xsd:element maxOccurs="1" minOccurs="0" name="anyUri" nillable="true" type="xsd:anyURI"/>
+	 <xsd:element maxOccurs="1" minOccurs="0" name="ipAddress" nillable="true" type="tns:ParlayX.IpAddressType"/>
+	 <xsd:element maxOccurs="1" minOccurs="0" name="alias" nillable="true" type="xsd:string"/>
+	 <xsd:element maxOccurs="1" minOccurs="0" name="otherId" nillable="true" type="tns:ParlayX.OtherIdType"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ParlayX.PollingIndicationType">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="1" name="modeRequested" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="address" type="tns:ParlayX.UserIdType"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="port" nillable="true" type="xsd:string"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ParlayX.DigitsConfigurationType">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="0" name="maxDigits" type="xsd:int"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="minDigits" type="xsd:int"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="interruptMedia" type="xsd:boolean"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="startDigit" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="stopDigit" nillable="true" type="xsd:string"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:simpleType name="ParlayX.ActionValuesType">
+    <xsd:restriction base="xsd:string">
+     <xsd:enumeration value="Route"/>
+     <xsd:enumeration value="Continue"/>
+     <xsd:enumeration value="OnHold"/>
+     <xsd:enumeration value="EndCall"/>
+     <xsd:enumeration value="ConnectAndRemove"/>
+     <xsd:enumeration value="RouteLeg"/>
+     <xsd:enumeration value="ConnectLegs"/>
+     <xsd:enumeration value="RemoveLeg"/>
+     <xsd:enumeration value="PlayAndCollect"/>
+     <xsd:enumeration value="PlayAndRecord"/>
+     <xsd:enumeration value="StopPlayAndRecord"/>
+    </xsd:restriction>
+   </xsd:simpleType>
+   <xsd:complexType name="ParlayX.ActionType">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="1" name="actionToPerform" type="tns:ParlayX.ActionValuesType"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="routingAddress" type="tns:ParlayX.UserIdType"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="callingPartyAddress" type="tns:ParlayX.UserIdType"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="legId" type="xsd:int"/>
+     <xsd:element maxOccurs="unbounded" minOccurs="0" name="legIdSet" nillable="true" type="xsd:int"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="chargingCode" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="announcementId" type="xsd:int"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="defaultErrorHandling" type="xsd:boolean"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="recordingConfiguration" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="digitsConfiguration" type="tns:ParlayX.DigitsConfigurationType"/>
+     <xsd:element maxOccurs="unbounded" minOccurs="0" name="announcementLeg" nillable="true" type="xsd:int"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="mediaRecordingIdentifier" nillable="true" type="xsd:string"/>
+    </xsd:sequence>
+   </xsd:complexType>  
+   <xsd:simpleType name="ParlayX.CallEventsType">
+    <xsd:restriction base="xsd:string">
+     <xsd:enumeration value="Busy"/>
+     <xsd:enumeration value="NotReachable"/>
+     <xsd:enumeration value="NoAnswer"/>
+     <xsd:enumeration value="CalledNumber"/>
+     <xsd:enumeration value="Answer"/>
+     <xsd:enumeration value="Disconnected"/>
+     <xsd:enumeration value="Ringing"/>
+     <xsd:enumeration value="Abandon"/>
+     <xsd:enumeration value="CollectedData"/>
+     <xsd:enumeration value="RouteSelectFailure"/>
+     <xsd:enumeration value="EndOfAnnouncement"/>
+    </xsd:restriction>
+   </xsd:simpleType>
+   <xsd:complexType name="ParlayX.NameValuePairType">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="1" name="name" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="value" nillable="true" type="xsd:string"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ParlayX.EventDescriptionType">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="1" name="callEvent" type="tns:ParlayX.CallEventsType"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="eventParams" type="tns:ParlayX.NameValuePairType"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ParlayX.EventType">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="1" name="correlator" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="callingParticipant" type="tns:ParlayX.UserIdType"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="calledParticipant" type="tns:ParlayX.UserIdType"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="callSessionIdentifier" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="timestamp" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="eventNotified" type="tns:ParlayX.EventDescriptionType"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   
+   
+   
+    <xsd:simpleType name="ParlayX.CodesType">
+    <xsd:restriction base="xsd:string">
+     <xsd:enumeration value="Pending"/>
+     <xsd:enumeration value="Success"/>
+    </xsd:restriction>
+   </xsd:simpleType>
+   <xsd:complexType name="ParlayX.ResultCodeType">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="1" name="resultCode" type="tns:ParlayX.CodesType"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:simpleType name="ParlayX.CallParticipantStatusType">
+    <xsd:restriction base="xsd:string">
+     <xsd:enumeration value="CallParticipantInitial"/>
+     <xsd:enumeration value="CallParticipantConnected"/>
+     <xsd:enumeration value="CallParticipantTerminated"/>
+     <xsd:enumeration value="CallParticipantOnHold"/>
+    </xsd:restriction>
+   </xsd:simpleType>
+   <xsd:simpleType name="ParlayX.CallParticipantTerminationCauseType">
+    <xsd:restriction base="xsd:string">
+     <xsd:enumeration value="CallParticipantNoAnswer"/>
+     <xsd:enumeration value="CallParticipantBusy"/>
+     <xsd:enumeration value="CallParticipantNotReachable"/>
+     <xsd:enumeration value="CallParticipantHungUp"/>
+     <xsd:enumeration value="CallParticipantAborted"/>
+    </xsd:restriction>
+   </xsd:simpleType>
+   <xsd:complexType name="ParlayX.CallParticipantInfoType">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="1" name="callParticipantIdentifier" type="tns:ParlayX.UserIdType"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="callParticipantStatus" type="tns:ParlayX.CallParticipantStatusType"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="callParticipantStartTime" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="callParticipantDuration" nillable="true" type="xsd:int"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="callParticipantTerminationCause" nillable="true" type="tns:ParlayX.CallParticipantTerminationCauseType"/>
+    </xsd:sequence>
+   </xsd:complexType>  
+   
+   
+   <xsd:simpleType name="ParlayX.AddressDirectionType">
+    <xsd:restriction base="xsd:string">
+     <xsd:enumeration value="Called"/>
+     <xsd:enumeration value="Calling"/>
+     <xsd:enumeration value="Both"/>
+    </xsd:restriction>
+   </xsd:simpleType>
+   <xsd:complexType name="ParlayX.PolicyExceptiondata">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="1" name="messageId" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="text" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="variables" nillable="true" type="xsd:string"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ParlayX.ServiceExceptiondata">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="1" name="messageId" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="text" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="variables" nillable="true" type="xsd:string"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ParlayX.startCallNotificationRequest">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="1" name="reference" type="tns:ParlayX.SimpleReferenceType"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="pollingModeOn" type="tns:ParlayX.PollingIndicationType"/>
+     <xsd:element maxOccurs="unbounded" minOccurs="1" name="monitoredParties" nillable="true" type="tns:ParlayX.UserIdType"/>
+     <xsd:element maxOccurs="unbounded" minOccurs="1" name="otherParties" nillable="true" type="tns:ParlayX.UserIdType"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="addressDirection" nillable="true" type="tns:ParlayX.AddressDirectionType"/>
+     <xsd:element maxOccurs="unbounded" minOccurs="0" name="criteria" nillable="true" type="tns:ParlayX.CallEventsType"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="filterParams" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="meshMode" type="xsd:boolean"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="digitsConfiguration" type="tns:ParlayX.DigitsConfigurationType"/>
+    </xsd:sequence>   
+   </xsd:complexType>
+   <xsd:complexType name="ParlayX.startCallNotificationResponse">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="0" name="code" type="xsd:int"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="description" nillable="true" type="xsd:string"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ParlayX.stopCallNotificationRequest">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="1" name="correlator" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="mediaCollectionIdentifier" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="mediaRecordingIdentifier" nillable="true" type="xsd:string"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ParlayX.stopCallNotificationResponse">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="0" name="code" type="xsd:int"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="description" nillable="true" type="xsd:string"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ParlayX.startCallDirectionNotificationRequest">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="1" name="reference" type="tns:ParlayX.SimpleReferenceType"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="pollingModeOn" type="tns:ParlayX.PollingIndicationType"/>
+     <xsd:element maxOccurs="unbounded" minOccurs="1" name="monitoredParties" nillable="true" type="tns:ParlayX.UserIdType"/>
+     <xsd:element maxOccurs="unbounded" minOccurs="0" name="otherParties" nillable="true" type="tns:ParlayX.UserIdType"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="addressDirection" nillable="true" type="tns:ParlayX.AddressDirectionType"/>
+     <xsd:element maxOccurs="unbounded" minOccurs="0" name="criteria" nillable="true" type="tns:ParlayX.CallEventsType"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="filterParams" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="defaultOnHold" type="xsd:boolean"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="announcementId" type="xsd:int"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="meshMode" type="xsd:boolean"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="defaultErrorHandling" type="xsd:boolean"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="digitsConfiguration" type="tns:ParlayX.DigitsConfigurationType"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ParlayX.startCallDirectionNotificationResponse">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="0" name="code" type="xsd:int"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="description" nillable="true" type="xsd:string"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ParlayX.stopCallDirectionNotificationRequest">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="1" name="correlator" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="mediaCollectionIdentifier" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="mediaRecordingIdentifier" nillable="true" type="xsd:string"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ParlayX.stopCallDirectionNotificationResponse">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="0" name="code" type="xsd:int"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="description" nillable="true" type="xsd:string"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ParlayX.updateCallDirectionNotificationRequest">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="1" name="correlator" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="criteria" nillable="true" type="tns:ParlayX.updateCallDirectionNotificationRequest.criteria_ArrayOfParlayX.CallEventsType"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="otherParties" nillable="true" type="tns:ParlayX.updateCallDirectionNotificationRequest.otherParties_ArrayOfParlayX.UserIdType"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="addressDirection" nillable="true" type="tns:ParlayX.AddressDirectionType"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="defaultOnHold" type="xsd:boolean"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="pollingModeOn" type="tns:ParlayX.PollingIndicationType"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="filterParams" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="announcementId" type="xsd:int"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="meshMode" type="xsd:boolean"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="defaultErrorHandling" type="xsd:boolean"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="digitsConfiguration" type="tns:ParlayX.DigitsConfigurationType"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ParlayX.updateCallDirectionNotificationRequest.criteria_ArrayOfParlayX.CallEventsType">
+    <xsd:sequence>
+     <xsd:element maxOccurs="unbounded" minOccurs="0" name="item" type="tns:ParlayX.CallEventsType"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ParlayX.updateCallDirectionNotificationRequest.otherParties_ArrayOfParlayX.UserIdType">
+    <xsd:sequence>
+     <xsd:element maxOccurs="unbounded" minOccurs="0" name="item" type="tns:ParlayX.UserIdType"/>
+    </xsd:sequence>
+   </xsd:complexType>
+
+   <xsd:complexType name="ParlayX.updateCallDirectionNotificationResponse">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="0" name="code" type="xsd:int"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="description" nillable="true" type="xsd:string"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ParlayX.updateCallNotificationRequest">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="1" name="correlator" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="pollingModeOn" type="tns:ParlayX.PollingIndicationType"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="criteria" nillable="true" type="tns:ParlayX.updateCallNotificationRequest.criteria_ArrayOfParlayX.CallEventsType"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="otherParties" nillable="true" type="tns:ParlayX.updateCallNotificationRequest.otherParties_ArrayOfParlayX.UserIdType"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="addressDirection" nillable="true" type="tns:ParlayX.AddressDirectionType"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="filterParams" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="meshMode" type="xsd:boolean"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="digitsConfiguration" type="tns:ParlayX.DigitsConfigurationType"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ParlayX.updateCallNotificationRequest.criteria_ArrayOfParlayX.CallEventsType">
+    <xsd:sequence>
+     <xsd:element maxOccurs="unbounded" minOccurs="0" name="item" type="tns:ParlayX.CallEventsType"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ParlayX.updateCallNotificationRequest.otherParties_ArrayOfParlayX.UserIdType">
+    <xsd:sequence>
+     <xsd:element maxOccurs="unbounded" minOccurs="0" name="item" type="tns:ParlayX.UserIdType"/>
+    </xsd:sequence>
+   </xsd:complexType>  
+  
+   <xsd:complexType name="ParlayX.updateCallNotificationResponse">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="0" name="code" type="xsd:int"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="description" nillable="true" type="xsd:string"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ParlayX.dispatchActionRequest">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="1" name="action" type="tns:ParlayX.ActionType"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="callSessionIdentifier" nillable="true" type="xsd:string"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ParlayX.dispatchActionResponse">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="0" name="code" type="xsd:int"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="description" nillable="true" type="xsd:string"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ParlayX.getCallNotificationsRequest">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="1" name="correlator" nillable="true" type="xsd:string"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ParlayX.getCallNotificationsResponse">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="1" name="events" type="tns:ParlayX.EventType"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   
+      
+   
+   <xsd:complexType name="ParlayX.endCallSessionRequest">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="1" name="callSessionIdentifier" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="announcementId" nillable="true" type="xsd:int"/>
+    </xsd:sequence>
+   </xsd:complexType>   
+      <xsd:complexType name="ParlayX.endCallSessionResponse">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="1" name="resultCode" type="tns:ParlayX.ResultCodeType"/>
+    </xsd:sequence>
+   </xsd:complexType>   
+   
+   
+     <xsd:complexType name="ParlayX.makeCallSessionRequest">
+    <xsd:sequence>
+     <xsd:element maxOccurs="2" minOccurs="1" name="callParticipants" nillable="true" type="tns:ParlayX.UserIdType"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="firstParticipantDisplayedAddress" nillable="true" type="tns:ParlayX.UserIdType"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="firstParticipantDisplayedName" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="otherParticipantsDisplayedAddress" nillable="true" type="tns:ParlayX.UserIdType"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="otherParticipantsDisplayedName" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="chargingCode" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="reference" nillable="true" type="tns:ParlayX.SimpleReferenceType"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ParlayX.makeCallSessionResponse">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="1" name="callSessionIdentifier" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="resultCode" type="tns:ParlayX.ResultCodeType"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   
+   <xsd:complexType name="ParlayX.getCallSessionInformationRequest">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="1" name="callSessionIdentifier" nillable="true" type="xsd:string"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ParlayX.getCallSessionInformationResponse">
+    <xsd:sequence>
+     <xsd:element maxOccurs="unbounded" minOccurs="1" name="callParticipantInfo" nillable="true" type="tns:ParlayX.CallParticipantInfoType"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   
+   <xsd:complexType name="ParlayX.CallNotificationManager.ServiceException">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="1" name="ServiceExcep" type="tns:ParlayX.ServiceExceptiondata"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ParlayX.CallNotificationManager.PolicyException">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="1" name="PolicyExcep" type="tns:ParlayX.PolicyExceptiondata"/>
+    </xsd:sequence>
+   </xsd:complexType>
+    <xsd:complexType name="ParlayX.ThirdParty.ServiceException">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="1" name="ServiceExcep" type="tns:ParlayX.ServiceExceptiondata"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ParlayX.ThirdParty.PolicyException">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="1" name="PolicyExcep" type="tns:ParlayX.PolicyExceptiondata"/>
+    </xsd:sequence>
+   </xsd:complexType>   
+   <xsd:simpleType name="ParlayX.CallNotificationManager">
+    <xsd:restriction base="xsd:anyURI"/>
+   </xsd:simpleType>
+   <xsd:simpleType name="ParlayX.ThirdParty">
+    <xsd:restriction base="xsd:anyURI"/>
+   </xsd:simpleType>
+  </xsd:schema>
+ </wsdl:types>
+
+   <message name="ParlayX.CallNotificationManager.updateCallDirectionNotificationResponse">
+
+      <part name="result" type="tns:ParlayX.updateCallDirectionNotificationResponse"/>
+
+   </message>
+
+   <message name="ParlayX.CallNotificationManager.updateCallDirectionNotification">
+
+      <part name="parameters" type="tns:ParlayX.updateCallDirectionNotificationRequest"/>
+
+   </message>
+
+   <message name="ParlayX.ThirdParty.getCallSessionInformation">
+
+      <part name="parameters" type="tns:ParlayX.getCallSessionInformationRequest"/>
+
+   </message>
+   
+   <message name="ParlayX.CallNotificationManager.getCallNotifications">
+
+      <part name="parameters" type="tns:ParlayX.getCallNotificationsRequest"/>
+
+   </message>
+
+   <message name="ParlayX.CallNotificationManager.startCallDirectionNotificationResponse">
+
+      <part name="result" type="tns:ParlayX.startCallDirectionNotificationResponse"/>
+
+   </message>
+
+   <message name="ParlayX.CallNotificationManager.getCallNotificationsResponse">
+
+      <part name="result" type="tns:ParlayX.getCallNotificationsResponse"/>
+
+   </message>
+   
+   <message name="_exception.ParlayX.ThirdParty.PolicyException">
+
+      <part name="exception" type="tns:ParlayX.ThirdParty.PolicyException"/>
+
+   </message>
+   
+   <message name="ParlayX.ThirdParty.makeCallSession">
+
+      <part name="parameters" type="tns:ParlayX.makeCallSessionRequest"/>
+
+   </message>
+
+   <message name="ParlayX.CallNotificationManager.stopCallNotification">
+
+      <part name="parameters" type="tns:ParlayX.stopCallNotificationRequest"/>
+
+   </message>
+
+   <message name="ParlayX.CallNotificationManager.startCallNotification">
+
+      <part name="parameters" type="tns:ParlayX.startCallNotificationRequest"/>
+
+   </message>
+
+   <message name="_exception.ParlayX.CallNotificationManager.ServiceException">
+
+      <part name="exception" type="tns:ParlayX.CallNotificationManager.ServiceException"/>
+
+   </message>
+
+   <message name="_exception.ParlayX.CallNotificationManager.PolicyException">
+
+      <part name="exception" type="tns:ParlayX.CallNotificationManager.PolicyException"/>
+
+   </message>
+
+   <message name="ParlayX.CallNotificationManager.startCallNotificationResponse">
+
+      <part name="result" type="tns:ParlayX.startCallNotificationResponse"/>
+
+   </message>
+   
+   <message name="ParlayX.ThirdParty.getCallSessionInformationResponse">
+
+      <part name="result" type="tns:ParlayX.getCallSessionInformationResponse"/>
+
+   </message>
+
+   <message name="ParlayX.CallNotificationManager.dispatchActionResponse">
+
+      <part name="result" type="tns:ParlayX.dispatchActionResponse"/>
+
+   </message>
+
+   <message name="ParlayX.CallNotificationManager.stopCallNotificationResponse">
+
+      <part name="result" type="tns:ParlayX.stopCallNotificationResponse"/>
+
+   </message>
+
+   <message name="ParlayX.CallNotificationManager.dispatchAction">
+
+      <part name="parameters" type="tns:ParlayX.dispatchActionRequest"/>
+
+   </message>
+
+   <message name="ParlayX.CallNotificationManager.startCallDirectionNotification">
+
+      <part name="parameters" type="tns:ParlayX.startCallDirectionNotificationRequest"/>
+
+   </message>
+
+   <message name="ParlayX.CallNotificationManager.updateCallNotification">
+
+      <part name="parameters" type="tns:ParlayX.updateCallNotificationRequest"/>
+
+   </message>
+
+   <message name="ParlayX.CallNotificationManager.updateCallNotificationResponse">
+
+      <part name="result" type="tns:ParlayX.updateCallNotificationResponse"/>
+
+   </message>
+   
+   <message name="_exception.ParlayX.ThirdParty.ServiceException">
+
+      <part name="exception" type="tns:ParlayX.ThirdParty.ServiceException"/>
+
+   </message>
+
+   <message name="ParlayX.CallNotificationManager.stopCallDirectionNotification">
+
+      <part name="parameters" type="tns:ParlayX.stopCallDirectionNotificationRequest"/>
+
+   </message>
+
+   <message name="ParlayX.CallNotificationManager.stopCallDirectionNotificationResponse">
+
+      <part name="result" type="tns:ParlayX.stopCallDirectionNotificationResponse"/>
+
+   </message>
+   
+   <message name="ParlayX.ThirdParty.endCallSession">
+
+      <part name="parameters" type="tns:ParlayX.endCallSessionRequest"/>
+
+   </message>   
+	
+	
+	<message name="ParlayX.ThirdParty.endCallSessionResponse">
+
+      <part name="result" type="tns:ParlayX.endCallSessionResponse"/>
+
+   </message>
+   
+   <message name="ParlayX.ThirdParty.makeCallSessionResponse">
+
+      <part name="result" type="tns:ParlayX.makeCallSessionResponse"/>
+
+   </message>
+
+   <portType name="ParlayX.CallNotificationManager">
+
+      <operation name="startCallNotification" parameterOrder="parameters result">
+
+         <input message="tns:ParlayX.CallNotificationManager.startCallNotification"/>
+
+         <output message="tns:ParlayX.CallNotificationManager.startCallNotificationResponse"/>
+
+         <fault message="tns:_exception.ParlayX.CallNotificationManager.PolicyException" name="ParlayX.CallNotificationManager.PolicyException"/>
+
+         <fault message="tns:_exception.ParlayX.CallNotificationManager.ServiceException" name="ParlayX.CallNotificationManager.ServiceException"/>
+
+      </operation>
+
+      <operation name="stopCallNotification" parameterOrder="parameters result">
+
+         <input message="tns:ParlayX.CallNotificationManager.stopCallNotification"/>
+
+         <output message="tns:ParlayX.CallNotificationManager.stopCallNotificationResponse"/>
+
+         <fault message="tns:_exception.ParlayX.CallNotificationManager.PolicyException" name="ParlayX.CallNotificationManager.PolicyException"/>
+
+         <fault message="tns:_exception.ParlayX.CallNotificationManager.ServiceException" name="ParlayX.CallNotificationManager.ServiceException"/>
+
+      </operation>
+
+      <operation name="startCallDirectionNotification" parameterOrder="parameters result">
+
+         <input message="tns:ParlayX.CallNotificationManager.startCallDirectionNotification"/>
+
+         <output message="tns:ParlayX.CallNotificationManager.startCallDirectionNotificationResponse"/>
+
+         <fault message="tns:_exception.ParlayX.CallNotificationManager.PolicyException" name="ParlayX.CallNotificationManager.PolicyException"/>
+
+         <fault message="tns:_exception.ParlayX.CallNotificationManager.ServiceException" name="ParlayX.CallNotificationManager.ServiceException"/>
+
+      </operation>
+
+      <operation name="stopCallDirectionNotification" parameterOrder="parameters result">
+
+         <input message="tns:ParlayX.CallNotificationManager.stopCallDirectionNotification"/>
+
+         <output message="tns:ParlayX.CallNotificationManager.stopCallDirectionNotificationResponse"/>
+
+         <fault message="tns:_exception.ParlayX.CallNotificationManager.PolicyException" name="ParlayX.CallNotificationManager.PolicyException"/>
+
+         <fault message="tns:_exception.ParlayX.CallNotificationManager.ServiceException" name="ParlayX.CallNotificationManager.ServiceException"/>
+
+      </operation>
+
+      <operation name="updateCallDirectionNotification" parameterOrder="parameters result">
+
+         <input message="tns:ParlayX.CallNotificationManager.updateCallDirectionNotification"/>
+
+         <output message="tns:ParlayX.CallNotificationManager.updateCallDirectionNotificationResponse"/>
+
+         <fault message="tns:_exception.ParlayX.CallNotificationManager.PolicyException" name="ParlayX.CallNotificationManager.PolicyException"/>
+
+         <fault message="tns:_exception.ParlayX.CallNotificationManager.ServiceException" name="ParlayX.CallNotificationManager.ServiceException"/>
+
+      </operation>
+
+      <operation name="updateCallNotification" parameterOrder="parameters result">
+
+         <input message="tns:ParlayX.CallNotificationManager.updateCallNotification"/>
+
+         <output message="tns:ParlayX.CallNotificationManager.updateCallNotificationResponse"/>
+
+         <fault message="tns:_exception.ParlayX.CallNotificationManager.PolicyException" name="ParlayX.CallNotificationManager.PolicyException"/>
+
+         <fault message="tns:_exception.ParlayX.CallNotificationManager.ServiceException" name="ParlayX.CallNotificationManager.ServiceException"/>
+
+      </operation>
+
+      <operation name="dispatchAction" parameterOrder="parameters result">
+
+         <input message="tns:ParlayX.CallNotificationManager.dispatchAction"/>
+
+         <output message="tns:ParlayX.CallNotificationManager.dispatchActionResponse"/>
+
+         <fault message="tns:_exception.ParlayX.CallNotificationManager.PolicyException" name="ParlayX.CallNotificationManager.PolicyException"/>
+
+         <fault message="tns:_exception.ParlayX.CallNotificationManager.ServiceException" name="ParlayX.CallNotificationManager.ServiceException"/>
+
+      </operation>
+
+      <operation name="getCallNotifications" parameterOrder="parameters result">
+
+         <input message="tns:ParlayX.CallNotificationManager.getCallNotifications"/>
+
+         <output message="tns:ParlayX.CallNotificationManager.getCallNotificationsResponse"/>
+
+         <fault message="tns:_exception.ParlayX.CallNotificationManager.PolicyException" name="ParlayX.CallNotificationManager.PolicyException"/>
+
+         <fault message="tns:_exception.ParlayX.CallNotificationManager.ServiceException" name="ParlayX.CallNotificationManager.ServiceException"/>
+
+      </operation>	   
+
+   </portType>
+   
+   <portType name="ParlayX.ThirdParty">
+
+      <operation name="endCallSession" parameterOrder="parameters result">
+
+         <input message="tns:ParlayX.ThirdParty.endCallSession"/>
+
+         <output message="tns:ParlayX.ThirdParty.endCallSessionResponse"/>
+
+         <fault message="tns:_exception.ParlayX.ThirdParty.ServiceException" name="ParlayX.ThirdParty.ServiceException"/>
+
+         <fault message="tns:_exception.ParlayX.ThirdParty.PolicyException" name="ParlayX.ThirdParty.PolicyException"/>
+
+      </operation>
+
+      <operation name="makeCallSession" parameterOrder="parameters result">
+
+         <input message="tns:ParlayX.ThirdParty.makeCallSession"/>
+
+         <output message="tns:ParlayX.ThirdParty.makeCallSessionResponse"/>
+
+         <fault message="tns:_exception.ParlayX.ThirdParty.ServiceException" name="ParlayX.ThirdParty.ServiceException"/>
+
+         <fault message="tns:_exception.ParlayX.ThirdParty.PolicyException" name="ParlayX.ThirdParty.PolicyException"/>
+
+      </operation>
+
+      <operation name="getCallSessionInformation" parameterOrder="parameters result">
+
+         <input message="tns:ParlayX.ThirdParty.getCallSessionInformation"/>
+
+         <output message="tns:ParlayX.ThirdParty.getCallSessionInformationResponse"/>
+
+         <fault message="tns:_exception.ParlayX.ThirdParty.ServiceException" name="ParlayX.ThirdParty.ServiceException"/>
+
+         <fault message="tns:_exception.ParlayX.ThirdParty.PolicyException" name="ParlayX.ThirdParty.PolicyException"/>
+
+      </operation>
+
+   </portType>
+
+   <binding name="ParlayX.ThirdPartybinding" type="tns:ParlayX.ThirdParty">
+
+      <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <operation name="endCallSession">
+
+         <soap:operation soapAction="ParlayX.ThirdParty#endCallSession"/>
+
+         <input>
+
+            <soap:body namespace="ParlayX.ThirdParty" use="literal"/>
+
+         </input>
+
+         <output>
+
+            <soap:body namespace="ParlayX.ThirdParty" use="literal"/>
+
+         </output>
+
+      </operation>
+
+      <operation name="makeCallSession">
+
+         <soap:operation soapAction="ParlayX.ThirdParty#makeCallSession"/>
+
+         <input>
+
+            <soap:body namespace="ParlayX.ThirdParty" use="literal"/>
+
+         </input>
+
+         <output>
+
+            <soap:body namespace="ParlayX.ThirdParty" use="literal"/>
+
+         </output>
+
+      </operation>
+
+      <operation name="getCallSessionInformation">
+
+         <soap:operation soapAction="ParlayX.ThirdParty#getCallSessionInformation"/>
+
+         <input>
+
+            <soap:body namespace="ParlayX.ThirdParty" use="literal"/>
+
+         </input>
+
+         <output>
+
+            <soap:body namespace="ParlayX.ThirdParty" use="literal"/>
+
+         </output>
+
+      </operation>
+
+   </binding>
+
+   
+   
+   <binding name="ParlayX.CallNotificationManagerbinding" type="tns:ParlayX.CallNotificationManager">
+
+      <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <operation name="startCallNotification">
+
+         <soap:operation soapAction="ParlayX.CallNotificationManager#startCallNotification"/>
+
+         <input>
+
+            <soap:body namespace="ParlayX.CallNotificationManager" use="literal"/>
+
+         </input>
+
+         <output>
+
+            <soap:body namespace="ParlayX.CallNotificationManager" use="literal"/>
+
+         </output>
+
+      </operation>
+
+      <operation name="stopCallNotification">
+
+         <soap:operation soapAction="ParlayX.CallNotificationManager#stopCallNotification"/>
+
+         <input>
+
+            <soap:body namespace="ParlayX.CallNotificationManager" use="literal"/>
+
+         </input>
+
+         <output>
+
+            <soap:body namespace="ParlayX.CallNotificationManager" use="literal"/>
+
+         </output>
+
+      </operation>
+
+      <operation name="startCallDirectionNotification">
+
+         <soap:operation soapAction="ParlayX.CallNotificationManager#startCallDirectionNotification"/>
+
+         <input>
+
+            <soap:body namespace="ParlayX.CallNotificationManager" use="literal"/>
+
+         </input>
+
+         <output>
+
+            <soap:body namespace="ParlayX.CallNotificationManager" use="literal"/>
+
+         </output>
+
+      </operation>
+
+      <operation name="stopCallDirectionNotification">
+
+         <soap:operation soapAction="ParlayX.CallNotificationManager#stopCallDirectionNotification"/>
+
+         <input>
+
+            <soap:body namespace="ParlayX.CallNotificationManager" use="literal"/>
+
+         </input>
+
+         <output>
+
+            <soap:body namespace="ParlayX.CallNotificationManager" use="literal"/>
+
+         </output>
+
+      </operation>
+
+      <operation name="updateCallDirectionNotification">
+
+         <soap:operation soapAction="ParlayX.CallNotificationManager#updateCallDirectionNotification"/>
+
+         <input>
+
+            <soap:body namespace="ParlayX.CallNotificationManager" use="literal"/>
+
+         </input>
+
+         <output>
+
+            <soap:body namespace="ParlayX.CallNotificationManager" use="literal"/>
+
+         </output>
+
+      </operation>
+
+      <operation name="updateCallNotification">
+
+         <soap:operation soapAction="ParlayX.CallNotificationManager#updateCallNotification"/>
+
+         <input>
+
+            <soap:body namespace="ParlayX.CallNotificationManager" use="literal"/>
+
+         </input>
+
+         <output>
+
+            <soap:body namespace="ParlayX.CallNotificationManager" use="literal"/>
+
+         </output>
+
+      </operation>
+
+      <operation name="dispatchAction">
+
+         <soap:operation soapAction="ParlayX.CallNotificationManager#dispatchAction"/>
+
+         <input>
+
+            <soap:body namespace="ParlayX.CallNotificationManager" use="literal"/>
+
+         </input>
+
+         <output>
+
+            <soap:body namespace="ParlayX.CallNotificationManager" use="literal"/>
+
+         </output>
+
+      </operation>
+
+      <operation name="getCallNotifications">
+
+         <soap:operation soapAction="ParlayX.CallNotificationManager#getCallNotifications"/>
+
+         <input>
+
+            <soap:body namespace="ParlayX.CallNotificationManager" use="literal"/>
+
+         </input>
+
+         <output>
+
+            <soap:body namespace="ParlayX.CallNotificationManager" use="literal"/>
+
+         </output>
+
+      </operation>	  
+
+   </binding>
+
+   <service name="ParlayX">
+
+      <port binding="tns:ParlayX.CallNotificationManagerbinding" name="ParlayX.CallNotificationManager">
+
+         <soap:address location="http://172.18.163.211:8996/ParlayX.CallNotificationManager"/>
+
+      </port>
+	  
+	  
+	  <port binding="tns:ParlayX.ThirdPartybinding" name="ParlayX.ThirdParty">
+
+         <soap:address location="http://172.18.163.211:8996/ParlayX.ThirdParty"/>
+
+      </port>
+
+   </service>
+
+</definitions>

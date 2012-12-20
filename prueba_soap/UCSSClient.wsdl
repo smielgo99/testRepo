@@ -1,0 +1,1058 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions targetNamespace="UCSS" xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tns="UCSS" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsd1="http://www.huawei.com/UCSS.xsd1">
+ <wsdl:types>
+  <xsd:schema targetNamespace="UCSS" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+   <xsd:complexType name="UCSS.UserIdType">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="1" name="phoneNumber" nillable="true" type="xsd:string"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="UCSS.NameValuePairType">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="1" name="name" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="value" nillable="true" type="xsd:string"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:simpleType name="UCSS.CallEventsType">
+    <xsd:restriction base="xsd:string">
+     <xsd:enumeration value="Busy"/>
+     <xsd:enumeration value="NotReachable"/>
+     <xsd:enumeration value="NoAnswer"/>
+     <xsd:enumeration value="CalledNumber"/>
+     <xsd:enumeration value="Answer"/>
+     <xsd:enumeration value="Disconnected"/>
+     <xsd:enumeration value="Ringing"/>
+     <xsd:enumeration value="Abandon"/>
+     <xsd:enumeration value="CollectedData"/>
+     <xsd:enumeration value="RouteSelectFailure"/>
+     <xsd:enumeration value="EndOfAnnouncement"/>
+    </xsd:restriction>
+   </xsd:simpleType>
+   <xsd:complexType name="UCSS.EventDescriptionType">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="1" name="callEvent" type="tns:UCSS.CallEventsType"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="eventParams" nillable="true" type="tns:UCSS.NameValuePairType"/>
+    </xsd:sequence>
+   </xsd:complexType>  
+   <xsd:complexType name="UCSS.EventType">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="1" name="correlator" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="callingParticipant" nillable="true" type="tns:UCSS.UserIdType"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="calledParticipant" nillable="true" type="tns:UCSS.UserIdType"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="callSessionIdentifier" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="urlCallBack" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="legId" nillable="true" type="xsd:int"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="timestamp" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="eventNotified" nillable="true" type="tns:UCSS.EventDescriptionType"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="roamingStatus" nillable="true" type="xsd:boolean"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="collectedData" nillable="true" type="xsd:string"/>
+    </xsd:sequence>
+   </xsd:complexType>      
+  
+   
+   <xsd:complexType name="UCSS.DigitsConfigurationType">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="0" name="maxDigits" nillable="true" type="xsd:int"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="minDigits" nillable="true" type="xsd:int"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="interruptMedia" type="xsd:boolean"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="startDigit" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="stopDigit" nillable="true" type="xsd:string"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   
+   <xsd:simpleType name="UCSS.ActionValuesType">
+    <xsd:restriction base="xsd:string">
+     <xsd:enumeration value="Route"/>
+     <xsd:enumeration value="Continue"/>
+     <xsd:enumeration value="OnHold"/>
+     <xsd:enumeration value="EndCall"/>
+     <xsd:enumeration value="ConnectAndRemove"/>
+     <xsd:enumeration value="RouteLeg"/>
+     <xsd:enumeration value="ConnectLegs"/>
+     <xsd:enumeration value="RemoveLeg"/>
+     <xsd:enumeration value="PlayAndCollect"/>
+     <xsd:enumeration value="PlayAndRecord"/>
+     <xsd:enumeration value="StopPlayAndRecord"/>
+    </xsd:restriction>
+   </xsd:simpleType>
+   <xsd:complexType name="UCSS.ActionType">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="1" name="actionToPerform" type="tns:UCSS.ActionValuesType"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="routingAddress" nillable="true" type="tns:UCSS.UserIdType"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="callingPartyAddress" nillable="true" type="tns:UCSS.UserIdType"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="legId" nillable="true" type="xsd:int"/>
+     <xsd:element maxOccurs="unbounded" minOccurs="0" name="legIdSet" nillable="true" type="xsd:int"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="chargingCode" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="announcementId" nillable="true" type="xsd:int"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="defaultErrorHandling" nillable="true" type="xsd:boolean"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="recordingConfiguration" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="digitsConfiguration" nillable="true" type="tns:UCSS.DigitsConfigurationType"/>
+     <xsd:element maxOccurs="unbounded" minOccurs="0" name="announcementLeg" nillable="true" type="xsd:int"/>
+     <xsd:element maxOccurs="1" minOccurs="0" name="mediaRecordingIdentifier" nillable="true" type="xsd:string"/>
+    </xsd:sequence>
+   </xsd:complexType>      
+      
+  
+   <xsd:complexType name="UCSS.notifyBusyRequest">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="1" name="correlator" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="callingParticipant" type="tns:UCSS.UserIdType"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="calledParticipant" type="tns:UCSS.UserIdType"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="callSessionIdentifier" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="urlCallBack" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="roamingStatus" type="xsd:boolean"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="legId" type="xsd:int"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="UCSS.notifyBusyResponse">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="1" name="code" type="xsd:int"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="description" nillable="true" type="xsd:string"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="UCSS.notifyNotReachableRequest">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="1" name="correlator" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="callingParticipant" type="tns:UCSS.UserIdType"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="calledParticipant" type="tns:UCSS.UserIdType"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="callSessionIdentifier" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="urlCallBack" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="roamingStatus" type="xsd:boolean"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="legId" type="xsd:int"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="UCSS.notifyNotReachableResponse">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="1" name="code" type="xsd:int"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="description" nillable="true" type="xsd:string"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="UCSS.notifyNoAnswerRequest">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="1" name="correlator" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="callingParticipant" type="tns:UCSS.UserIdType"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="calledParticipant" type="tns:UCSS.UserIdType"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="callSessionIdentifier" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="urlCallBack" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="roamingStatus" type="xsd:boolean"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="legId" type="xsd:int"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="UCSS.notifyNoAnswerResponse">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="1" name="code" type="xsd:int"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="description" nillable="true" type="xsd:string"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="UCSS.notifyCalledNumberRequest">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="1" name="correlator" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="callingParticipant" type="tns:UCSS.UserIdType"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="calledParticipant" type="tns:UCSS.UserIdType"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="callSessionIdentifier" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="urlCallBack" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="roamingStatus" type="xsd:boolean"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="legId" type="xsd:int"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="UCSS.notifyCalledNumberResponse">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="1" name="code" type="xsd:int"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="description" nillable="true" type="xsd:string"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="UCSS.notifyAnswerRequest">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="1" name="correlator" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="callingParticipant" type="tns:UCSS.UserIdType"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="calledParticipant" type="tns:UCSS.UserIdType"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="callSessionIdentifier" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="urlCallBack" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="roamingStatus" type="xsd:boolean"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="legId" type="xsd:int"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="UCSS.notifyAnswerResponse">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="1" name="code" type="xsd:int"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="description" nillable="true" type="xsd:string"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="UCSS.notifyDisconnectRequest">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="1" name="correlator" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="callingParticipant" type="tns:UCSS.UserIdType"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="calledParticipant" type="tns:UCSS.UserIdType"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="callSessionIdentifier" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="urlCallBack" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="roamingStatus" type="xsd:boolean"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="legId" type="xsd:int"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="UCSS.notifyDisconnectResponse">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="1" name="code" type="xsd:int"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="description" nillable="true" type="xsd:string"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   
+   
+   <xsd:complexType name="UCSS.notifyCallEventRequest">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="1" name="callEvent" type="tns:UCSS.EventType"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="UCSS.notifyCallEventResponse">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="1" name="code" type="xsd:int"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="description" nillable="true" type="xsd:string"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   
+   
+   
+   
+   <xsd:complexType name="UCSS.notifyRingingRequest">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="1" name="correlator" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="callingParticipant" type="tns:UCSS.UserIdType"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="calledParticipant" type="tns:UCSS.UserIdType"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="callSessionIdentifier" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="urlCallBack" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="roamingStatus" type="xsd:boolean"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="legId" type="xsd:int"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="UCSS.notifyRingingResponse">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="1" name="code" type="xsd:int"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="description" nillable="true" type="xsd:string"/>
+    </xsd:sequence>
+   </xsd:complexType>
+  
+   <xsd:complexType name="UCSS.handleBusyRequest">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="1" name="correlator" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="callingParticipant" type="tns:UCSS.UserIdType"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="calledParticipant" type="tns:UCSS.UserIdType"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="callSessionIdentifier" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="urlCallBack" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="legId" type="xsd:int"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="roamingStatus" type="xsd:boolean"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="transactionId" nillable="true" type="xsd:string"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="UCSS.handleBusyResponse">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="1" name="actionToPerform" type="tns:UCSS.ActionValuesType"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="routingAddress" type="tns:UCSS.UserIdType"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="callingPartyAddress" type="tns:UCSS.UserIdType"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="chargingCode" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="announcementId" type="xsd:int"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="confirmationRequested" type="xsd:boolean"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="UCSS.handleNotReachableRequest">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="1" name="correlator" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="callingParticipant" type="tns:UCSS.UserIdType"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="calledParticipant" type="tns:UCSS.UserIdType"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="callSessionIdentifier" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="urlCallBack" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="legId" type="xsd:int"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="roamingStatus" type="xsd:boolean"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="transactionId" nillable="true" type="xsd:string"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="UCSS.handleNotReachableResponse">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="1" name="actionToPerform" type="tns:UCSS.ActionValuesType"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="routingAddress" type="tns:UCSS.UserIdType"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="callingPartyAddress" type="tns:UCSS.UserIdType"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="chargingCode" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="announcementId" type="xsd:int"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="confirmationRequested" type="xsd:boolean"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="UCSS.handleNoAnswerRequest">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="1" name="correlator" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="callingParticipant" type="tns:UCSS.UserIdType"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="calledParticipant" type="tns:UCSS.UserIdType"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="callSessionIdentifier" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="urlCallBack" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="legId" type="xsd:int"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="roamingStatus" type="xsd:boolean"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="transactionId" nillable="true" type="xsd:string"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="UCSS.handleNoAnswerResponse">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="1" name="actionToPerform" type="tns:UCSS.ActionValuesType"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="routingAddress" type="tns:UCSS.UserIdType"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="callingPartyAddress" type="tns:UCSS.UserIdType"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="chargingCode" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="announcementId" type="xsd:int"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="confirmationRequested" type="xsd:boolean"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="UCSS.handleCalledNumberRequest">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="1" name="correlator" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="callingParticipant" type="tns:UCSS.UserIdType"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="calledParticipant" type="tns:UCSS.UserIdType"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="callSessionIdentifier" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="urlCallBack" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="legId" type="xsd:int"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="roamingStatus" type="xsd:boolean"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="transactionId" nillable="true" type="xsd:string"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="UCSS.handleCalledNumberResponse">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="1" name="actionToPerform" type="tns:UCSS.ActionValuesType"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="routingAddress" type="tns:UCSS.UserIdType"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="callingPartyAddress" type="tns:UCSS.UserIdType"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="chargingCode" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="announcementId" type="xsd:int"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="confirmationRequested" type="xsd:boolean"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="UCSS.handleAnswerRequest">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="1" name="correlator" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="callingParticipant" type="tns:UCSS.UserIdType"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="calledParticipant" type="tns:UCSS.UserIdType"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="callSessionIdentifier" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="urlCallBack" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="legId" type="xsd:int"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="roamingStatus" type="xsd:boolean"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="transactionId" nillable="true" type="xsd:string"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="UCSS.handleAnswerResponse">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="1" name="actionToPerform" type="tns:UCSS.ActionValuesType"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="routingAddress" type="tns:UCSS.UserIdType"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="callingPartyAddress" type="tns:UCSS.UserIdType"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="chargingCode" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="announcementId" type="xsd:int"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="confirmationRequested" type="xsd:boolean"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="UCSS.handleDisconnectRequest">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="1" name="correlator" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="callingParticipant" type="tns:UCSS.UserIdType"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="calledParticipant" type="tns:UCSS.UserIdType"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="callSessionIdentifier" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="urlCallBack" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="legId" type="xsd:int"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="roamingStatus" type="xsd:boolean"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="transactionId" nillable="true" type="xsd:string"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="UCSS.handleDisconnectResponse">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="1" name="actionToPerform" type="tns:UCSS.ActionValuesType"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="routingAddress" type="tns:UCSS.UserIdType"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="callingPartyAddress" type="tns:UCSS.UserIdType"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="chargingCode" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="announcementId" type="xsd:int"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="confirmationRequested" type="xsd:boolean"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="UCSS.handleCallEventRequest">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="1" name="callEvent" type="tns:UCSS.EventType"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="UCSS.handleCallEventResponse">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="1" name="result" type="tns:UCSS.ActionType"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="UCSS.handleRingingRequest">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="1" name="correlator" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="callingParticipant" type="tns:UCSS.UserIdType"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="calledParticipant" type="tns:UCSS.UserIdType"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="callSessionIdentifier" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="urlCallBack" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="legId" type="xsd:int"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="roamingStatus" type="xsd:boolean"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="transactionId" nillable="true" type="xsd:string"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="UCSS.handleRingingResponse">
+    <xsd:sequence>
+     <xsd:element maxOccurs="1" minOccurs="1" name="actionToPerform" type="tns:UCSS.ActionValuesType"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="routingAddress" type="tns:UCSS.UserIdType"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="callingPartyAddress" type="tns:UCSS.UserIdType"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="chargingCode" nillable="true" type="xsd:string"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="announcementId" type="xsd:int"/>
+     <xsd:element maxOccurs="1" minOccurs="1" name="confirmationRequested" type="xsd:boolean"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:simpleType name="UCSS.CallNotification">
+    <xsd:restriction base="xsd:anyURI"/>
+   </xsd:simpleType>
+   <xsd:simpleType name="UCSS.CallDirectionNotification">
+    <xsd:restriction base="xsd:anyURI"/>
+   </xsd:simpleType>
+  </xsd:schema>
+ </wsdl:types>
+
+   <message name="UCSS.CallNotification.notifyNotReachableResponse">
+
+      <part name="result" type="tns:UCSS.notifyNotReachableResponse"/>
+
+   </message>
+
+   <message name="UCSS.CallDirectionNotification.handleNoAnswerResponse">
+
+      <part name="result" type="tns:UCSS.handleNoAnswerResponse"/>
+
+   </message>
+
+   <message name="UCSS.CallNotification.notifyCalledNumberResponse">
+
+      <part name="result" type="tns:UCSS.notifyCalledNumberResponse"/>
+
+   </message>
+
+   <message name="UCSS.CallNotification.notifyDisconnectResponse">
+
+      <part name="result" type="tns:UCSS.notifyDisconnectResponse"/>
+
+   </message>
+
+   <message name="UCSS.CallDirectionNotification.handleNotReachableResponse">
+
+      <part name="result" type="tns:UCSS.handleNotReachableResponse"/>
+
+   </message>
+
+   <message name="UCSS.CallNotification.notifyRinging">
+
+      <part name="parameters" type="tns:UCSS.notifyRingingRequest"/>
+
+   </message>
+
+   <message name="UCSS.CallNotification.notifyNotReachable">
+
+      <part name="parameters" type="tns:UCSS.notifyNotReachableRequest"/>
+
+   </message>
+
+   <message name="UCSS.CallDirectionNotification.handleRingingResponse">
+
+      <part name="result" type="tns:UCSS.handleRingingResponse"/>
+
+   </message>
+
+   <message name="UCSS.CallNotification.notifyAnswer">
+
+      <part name="parameters" type="tns:UCSS.notifyAnswerRequest"/>
+
+   </message>
+
+   <message name="UCSS.CallNotification.notifyAnswerResponse">
+
+      <part name="result" type="tns:UCSS.notifyAnswerResponse"/>
+
+   </message>
+
+   <message name="UCSS.CallDirectionNotification.handleAnswer">
+
+      <part name="parameters" type="tns:UCSS.handleAnswerRequest"/>
+
+   </message>
+
+   <message name="UCSS.CallDirectionNotification.handleAnswerResponse">
+
+      <part name="result" type="tns:UCSS.handleAnswerResponse"/>
+
+   </message>
+
+   <message name="UCSS.CallDirectionNotification.handleNotReachable">
+
+      <part name="parameters" type="tns:UCSS.handleNotReachableRequest"/>
+
+   </message>
+
+   <message name="UCSS.CallNotification.notifyNoAnswerResponse">
+
+      <part name="result" type="tns:UCSS.notifyNoAnswerResponse"/>
+
+   </message>
+
+   <message name="UCSS.CallDirectionNotification.handleCallEventResponse">
+
+      <part name="result" type="tns:UCSS.handleCallEventResponse"/>
+
+   </message>
+
+   <message name="UCSS.CallNotification.notifyRingingResponse">
+
+      <part name="result" type="tns:UCSS.notifyRingingResponse"/>
+
+   </message>
+
+   <message name="UCSS.CallNotification.notifyDisconnect">
+
+      <part name="parameters" type="tns:UCSS.notifyDisconnectRequest"/>
+
+   </message>
+
+   <message name="UCSS.CallNotification.notifyNoAnswer">
+
+      <part name="parameters" type="tns:UCSS.notifyNoAnswerRequest"/>
+
+   </message>
+
+   <message name="UCSS.CallNotification.notifyBusy">
+
+      <part name="parameters" type="tns:UCSS.notifyBusyRequest"/>
+
+   </message>
+
+   <message name="UCSS.CallNotification.notifyCallEventResponse">
+
+      <part name="result" type="tns:UCSS.notifyCallEventResponse"/>
+
+   </message>
+
+  
+
+   <message name="UCSS.CallDirectionNotification.handleBusyResponse">
+
+      <part name="result" type="tns:UCSS.handleBusyResponse"/>
+
+   </message>
+
+  
+
+   <message name="UCSS.CallNotification.notifyCallEvent">
+
+      <part name="parameters" type="tns:UCSS.notifyCallEventRequest"/>
+
+   </message>
+
+   <message name="UCSS.CallNotification.notifyCalledNumber">
+
+      <part name="parameters" type="tns:UCSS.notifyCalledNumberRequest"/>
+
+   </message>
+
+   <message name="UCSS.CallDirectionNotification.handleDisconnect">
+
+      <part name="parameters" type="tns:UCSS.handleDisconnectRequest"/>
+
+   </message>
+
+   <message name="UCSS.CallDirectionNotification.handleNoAnswer">
+
+      <part name="parameters" type="tns:UCSS.handleNoAnswerRequest"/>
+
+   </message>
+
+   <message name="UCSS.CallDirectionNotification.handleDisconnectResponse">
+
+      <part name="result" type="tns:UCSS.handleDisconnectResponse"/>
+
+   </message>
+
+   <message name="UCSS.CallNotification.notifyBusyResponse">
+
+      <part name="result" type="tns:UCSS.notifyBusyResponse"/>
+
+   </message>
+
+   <message name="UCSS.CallDirectionNotification.handleBusy">
+
+      <part name="parameters" type="tns:UCSS.handleBusyRequest"/>
+
+   </message>
+
+   <message name="UCSS.CallDirectionNotification.handleCallEvent">
+
+      <part name="parameters" type="tns:UCSS.handleCallEventRequest"/>
+
+   </message>
+
+   <message name="UCSS.CallDirectionNotification.handleRinging">
+
+      <part name="parameters" type="tns:UCSS.handleRingingRequest"/>
+
+   </message>
+
+   <message name="UCSS.CallDirectionNotification.handleCalledNumberResponse">
+
+      <part name="result" type="tns:UCSS.handleCalledNumberResponse"/>
+
+   </message>
+
+   <message name="UCSS.CallDirectionNotification.handleCalledNumber">
+
+      <part name="parameters" type="tns:UCSS.handleCalledNumberRequest"/>
+
+   </message>
+
+   <portType name="UCSS.CallNotification">
+
+      <operation name="notifyBusy" parameterOrder="parameters result">
+
+         <input message="tns:UCSS.CallNotification.notifyBusy"/>
+
+         <output message="tns:UCSS.CallNotification.notifyBusyResponse"/>
+
+      </operation>
+
+      <operation name="notifyNotReachable" parameterOrder="parameters result">
+
+         <input message="tns:UCSS.CallNotification.notifyNotReachable"/>
+
+         <output message="tns:UCSS.CallNotification.notifyNotReachableResponse"/>
+
+      </operation>
+
+      <operation name="notifyNoAnswer" parameterOrder="parameters result">
+
+         <input message="tns:UCSS.CallNotification.notifyNoAnswer"/>
+
+         <output message="tns:UCSS.CallNotification.notifyNoAnswerResponse"/>
+
+      </operation>
+
+      <operation name="notifyCalledNumber" parameterOrder="parameters result">
+
+         <input message="tns:UCSS.CallNotification.notifyCalledNumber"/>
+
+         <output message="tns:UCSS.CallNotification.notifyCalledNumberResponse"/>
+
+      </operation>
+
+      <operation name="notifyAnswer" parameterOrder="parameters result">
+
+         <input message="tns:UCSS.CallNotification.notifyAnswer"/>
+
+         <output message="tns:UCSS.CallNotification.notifyAnswerResponse"/>
+
+      </operation>
+
+      <operation name="notifyDisconnect" parameterOrder="parameters result">
+
+         <input message="tns:UCSS.CallNotification.notifyDisconnect"/>
+
+         <output message="tns:UCSS.CallNotification.notifyDisconnectResponse"/>
+
+      </operation>
+
+      <operation name="notifyCallEvent" parameterOrder="parameters result">
+
+         <input message="tns:UCSS.CallNotification.notifyCallEvent"/>
+
+         <output message="tns:UCSS.CallNotification.notifyCallEventResponse"/>
+
+      </operation>
+
+      <operation name="notifyRinging" parameterOrder="parameters result">
+
+         <input message="tns:UCSS.CallNotification.notifyRinging"/>
+
+         <output message="tns:UCSS.CallNotification.notifyRingingResponse"/>
+
+      </operation>
+
+    
+
+   </portType>
+
+   <portType name="UCSS.CallDirectionNotification">
+
+      <operation name="handleBusy" parameterOrder="parameters result">
+
+         <input message="tns:UCSS.CallDirectionNotification.handleBusy"/>
+
+         <output message="tns:UCSS.CallDirectionNotification.handleBusyResponse"/>
+
+      </operation>
+
+      <operation name="handleNotReachable" parameterOrder="parameters result">
+
+         <input message="tns:UCSS.CallDirectionNotification.handleNotReachable"/>
+
+         <output message="tns:UCSS.CallDirectionNotification.handleNotReachableResponse"/>
+
+      </operation>
+
+      <operation name="handleNoAnswer" parameterOrder="parameters result">
+
+         <input message="tns:UCSS.CallDirectionNotification.handleNoAnswer"/>
+
+         <output message="tns:UCSS.CallDirectionNotification.handleNoAnswerResponse"/>
+
+      </operation>
+
+      <operation name="handleCalledNumber" parameterOrder="parameters result">
+
+         <input message="tns:UCSS.CallDirectionNotification.handleCalledNumber"/>
+
+         <output message="tns:UCSS.CallDirectionNotification.handleCalledNumberResponse"/>
+
+      </operation>
+
+      <operation name="handleAnswer" parameterOrder="parameters result">
+
+         <input message="tns:UCSS.CallDirectionNotification.handleAnswer"/>
+
+         <output message="tns:UCSS.CallDirectionNotification.handleAnswerResponse"/>
+
+      </operation>
+
+      <operation name="handleDisconnect" parameterOrder="parameters result">
+
+         <input message="tns:UCSS.CallDirectionNotification.handleDisconnect"/>
+
+         <output message="tns:UCSS.CallDirectionNotification.handleDisconnectResponse"/>
+
+      </operation>
+
+      <operation name="handleCallEvent" parameterOrder="parameters result">
+
+         <input message="tns:UCSS.CallDirectionNotification.handleCallEvent"/>
+
+         <output message="tns:UCSS.CallDirectionNotification.handleCallEventResponse"/>
+
+      </operation>
+
+      <operation name="handleRinging" parameterOrder="parameters result">
+
+         <input message="tns:UCSS.CallDirectionNotification.handleRinging"/>
+
+         <output message="tns:UCSS.CallDirectionNotification.handleRingingResponse"/>
+
+      </operation>
+
+   </portType>
+
+   <binding name="UCSS.CallDirectionNotificationbinding" type="tns:UCSS.CallDirectionNotification">
+
+      <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <operation name="handleBusy">
+
+         <soap:operation soapAction="UCSS.CallDirectionNotification#handleBusy"/>
+
+         <input>
+
+            <soap:body namespace="UCSS.CallDirectionNotification" use="literal"/>
+
+         </input>
+
+         <output>
+
+            <soap:body namespace="UCSS.CallDirectionNotification" use="literal"/>
+
+         </output>
+
+      </operation>
+
+      <operation name="handleNotReachable">
+
+         <soap:operation soapAction="UCSS.CallDirectionNotification#handleNotReachable"/>
+
+         <input>
+
+            <soap:body namespace="UCSS.CallDirectionNotification" use="literal"/>
+
+         </input>
+
+         <output>
+
+            <soap:body namespace="UCSS.CallDirectionNotification" use="literal"/>
+
+         </output>
+
+      </operation>
+
+      <operation name="handleNoAnswer">
+
+         <soap:operation soapAction="UCSS.CallDirectionNotification#handleNoAnswer"/>
+
+         <input>
+
+            <soap:body namespace="UCSS.CallDirectionNotification" use="literal"/>
+
+         </input>
+
+         <output>
+
+            <soap:body namespace="UCSS.CallDirectionNotification" use="literal"/>
+
+         </output>
+
+      </operation>
+
+      <operation name="handleCalledNumber">
+
+         <soap:operation soapAction="UCSS.CallDirectionNotification#handleCalledNumber"/>
+
+         <input>
+
+            <soap:body namespace="UCSS.CallDirectionNotification" use="literal"/>
+
+         </input>
+
+         <output>
+
+            <soap:body namespace="UCSS.CallDirectionNotification" use="literal"/>
+
+         </output>
+
+      </operation>
+
+      <operation name="handleAnswer">
+
+         <soap:operation soapAction="UCSS.CallDirectionNotification#handleAnswer"/>
+
+         <input>
+
+            <soap:body namespace="UCSS.CallDirectionNotification" use="literal"/>
+
+         </input>
+
+         <output>
+
+            <soap:body namespace="UCSS.CallDirectionNotification" use="literal"/>
+
+         </output>
+
+      </operation>
+
+      <operation name="handleDisconnect">
+
+         <soap:operation soapAction="UCSS.CallDirectionNotification#handleDisconnect"/>
+
+         <input>
+
+            <soap:body namespace="UCSS.CallDirectionNotification" use="literal"/>
+
+         </input>
+
+         <output>
+
+            <soap:body namespace="UCSS.CallDirectionNotification" use="literal"/>
+
+         </output>
+
+      </operation>
+
+      <operation name="handleCallEvent">
+
+         <soap:operation soapAction="UCSS.CallDirectionNotification#handleCallEvent"/>
+
+         <input>
+
+            <soap:body namespace="UCSS.CallDirectionNotification" use="literal"/>
+
+         </input>
+
+         <output>
+
+            <soap:body namespace="UCSS.CallDirectionNotification" use="literal"/>
+
+         </output>
+
+      </operation>
+
+      <operation name="handleRinging">
+
+         <soap:operation soapAction="UCSS.CallDirectionNotification#handleRinging"/>
+
+         <input>
+
+            <soap:body namespace="UCSS.CallDirectionNotification" use="literal"/>
+
+         </input>
+
+         <output>
+
+            <soap:body namespace="UCSS.CallDirectionNotification" use="literal"/>
+
+         </output>
+
+      </operation>
+
+   </binding>
+
+   <binding name="UCSS.CallNotificationbinding" type="tns:UCSS.CallNotification">
+
+      <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <operation name="notifyBusy">
+
+         <soap:operation soapAction="UCSS.CallNotification#notifyBusy"/>
+
+         <input>
+
+            <soap:body namespace="UCSS.CallNotification" use="literal"/>
+
+         </input>
+
+         <output>
+
+            <soap:body namespace="UCSS.CallNotification" use="literal"/>
+
+         </output>
+
+      </operation>
+
+      <operation name="notifyNotReachable">
+
+         <soap:operation soapAction="UCSS.CallNotification#notifyNotReachable"/>
+
+         <input>
+
+            <soap:body namespace="UCSS.CallNotification" use="literal"/>
+
+         </input>
+
+         <output>
+
+            <soap:body namespace="UCSS.CallNotification" use="literal"/>
+
+         </output>
+
+      </operation>
+
+      <operation name="notifyNoAnswer">
+
+         <soap:operation soapAction="UCSS.CallNotification#notifyNoAnswer"/>
+
+         <input>
+
+            <soap:body namespace="UCSS.CallNotification" use="literal"/>
+
+         </input>
+
+         <output>
+
+            <soap:body namespace="UCSS.CallNotification" use="literal"/>
+
+         </output>
+
+      </operation>
+
+      <operation name="notifyCalledNumber">
+
+         <soap:operation soapAction="UCSS.CallNotification#notifyCalledNumber"/>
+
+         <input>
+
+            <soap:body namespace="UCSS.CallNotification" use="literal"/>
+
+         </input>
+
+         <output>
+
+            <soap:body namespace="UCSS.CallNotification" use="literal"/>
+
+         </output>
+
+      </operation>
+
+      <operation name="notifyAnswer">
+
+         <soap:operation soapAction="UCSS.CallNotification#notifyAnswer"/>
+
+         <input>
+
+            <soap:body namespace="UCSS.CallNotification" use="literal"/>
+
+         </input>
+
+         <output>
+
+            <soap:body namespace="UCSS.CallNotification" use="literal"/>
+
+         </output>
+
+      </operation>
+
+      <operation name="notifyDisconnect">
+
+         <soap:operation soapAction="UCSS.CallNotification#notifyDisconnect"/>
+
+         <input>
+
+            <soap:body namespace="UCSS.CallNotification" use="literal"/>
+
+         </input>
+
+         <output>
+
+            <soap:body namespace="UCSS.CallNotification" use="literal"/>
+
+         </output>
+
+      </operation>
+
+      <operation name="notifyCallEvent">
+
+         <soap:operation soapAction="UCSS.CallNotification#notifyCallEvent"/>
+
+         <input>
+
+            <soap:body namespace="UCSS.CallNotification" use="literal"/>
+
+         </input>
+
+         <output>
+
+            <soap:body namespace="UCSS.CallNotification" use="literal"/>
+
+         </output>
+
+      </operation>
+
+      <operation name="notifyRinging">
+
+         <soap:operation soapAction="UCSS.CallNotification#notifyRinging"/>
+
+         <input>
+
+            <soap:body namespace="UCSS.CallNotification" use="literal"/>
+
+         </input>
+
+         <output>
+
+            <soap:body namespace="UCSS.CallNotification" use="literal"/>
+
+         </output>
+
+      </operation>
+
+     
+
+   </binding>
+
+   <service name="UCSS">
+
+      <port binding="tns:UCSS.CallNotificationbinding" name="CallNotification">
+
+         <soap:address location="http://195.235.93.93:8080/WSVPNPlus/services/UCSS.CallNotificationbindingservice"/>
+
+      </port>  
+
+      <port binding="tns:UCSS.CallDirectionNotificationbinding" name="CallDirectionNotification">
+
+         <soap:address location="http://195.235.93.93:8080/WSVPNPlus/services/UCSS.CallNotificationbindingservice"/>
+
+      </port>
+
+   </service>
+
+</definitions>

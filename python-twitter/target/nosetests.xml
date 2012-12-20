@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?><testsuite name="nosetests" tests="1" errors="1" failures="0" skip="0"><testcase classname="nose.failure.Failure" name="runTest" time="0"><error type="exceptions.OSError" message="No such file D:\eclipse\workspace\python-twitter\python-twitter"><![CDATA[Traceback (most recent call last):
+  File "D:\wamp\bin\Python25\lib\unittest.py", line 260, in run
+    testMethod()
+  File "d:\wamp\bin\python25\lib\site-packages\nose-0.11.3-py2.5.egg\nose\failure.py", line 39, in runTest
+    raise self.exc_class(self.exc_val)
+OSError: No such file D:\eclipse\workspace\python-twitter\python-twitter
+]]></error></testcase></testsuite>

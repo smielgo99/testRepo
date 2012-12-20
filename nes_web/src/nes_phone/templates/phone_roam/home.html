@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+        <div id="forms">
+            <div class="toolbar">
+                <h1>Phone Roam</h1>
+
+            </div>
+            <form action="" id="log_form" method="post">
+                <ul class="edit rounded">
+                    <li>This Phone Number is:</li>
+                    <li><input type="text" placeholder="Phone" id="real_number" name="real_number" value="620459358"></input></li>
+                    
+                        <li>Phone Number to Roam With:</li>
+                        <li><input type="text"  placeholder="Introduce the phone number to start the service" id="log_number" name="log_number" value="" /></li>
+                    
+                </ul>
+                <ul class="individual_1_button">
+                        <li><a href="#" id="button_manage_subscription"></a></li>
+    
+                </ul>
+                <input type="hidden"  id="action" name="action" value="" />              
+            </form>
+        </div>
+        <div id="floaty" class="floaty">
+            <br />
+            ERROR<br /><br />
+            There's an error processing your request.<br />
+            Retry again <br/>
+            <ul class="individual_floaty_button">
+                <li><a href="#" id="hidefloaty">Close</a></li>
+               
+            </ul>
+        </div>
+<script>
+
+$(document).ready(function() {
+	var subs = "{{active_subscriptions}}";
+	
+	$('#log_number').val(subs);
+	if (subs==""){
+		$('#button_manage_subscription').text("Log with this phone");
+		$('#action').val("POST");
+	}else{
+	    $('#button_manage_subscription').text("Remove log");
+	    $('#action').val("DELETE");
+	}
+});
+
+
+	$('#button_manage_subscription').click(function() {
+    	subs($('#action').val(), $('#real_number').val(),$('#log_number').val());
+	});
+	$(function(){
+        
+        $('#togglefloaty').click(function(){
+            $('.floaty').toggleFloaty();
+            $(this).removeClass('active');
+            return false;
+        });
+
+        $('#hidefloaty').click(function(){
+            $('.floaty').hideFloaty();
+            $(this).removeClass('active');
+            location.reload();
+            return false;
+        });
+        
+        $('.floaty').makeFloaty({
+            spacing: 20,
+            time: '1s'
+        });
+
+    });
+function subs(action, real_number, log_number){
+    $.ajax({
+        type: "POST",
+        url: "subscription/",
+        data:({"real_number":real_number,"log_number":log_number, "action":action}),
+        success:function(result){
+          $('#log_number').val(result);
+          if (result==""){
+              $('#button_manage_subscription').text("Log with this phone");
+              $('#action').val("POST");
+          }else{
+              $('#button_manage_subscription').text("Remove log");
+              $('#action').val("DELETE");
+          }
+          
+        },
+        error: function(xhr, status, error) {
+            
+            
+            $('#floaty').css('visibility', 'visible');
+              
+            }
+        
+    });
+}
+</script>        
+{% endblock %}

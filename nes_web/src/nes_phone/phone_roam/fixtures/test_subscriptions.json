@@ -1,0 +1,10 @@
+[
+    {
+        "pk": 1, 
+        "model": "phone_roam.subscription", 
+        "fields": {
+            "log_number": "666777999", 
+            "real_number": "666777888"
+        }
+    }
+]

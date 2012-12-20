@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+        <div id="forms">
+            <div class="toolbar">
+                <h1>Polite Busy</h1>
+
+            </div>
+            <form action="/nes/polite/messages/" id="messages_form" method="post">
+            <ul class="individual_1_button">
+                <li><a href="#" id="message1">Message one</a></li>
+                <li><a href="#" id="message2">Message2</a></li>
+                <li><a href="#" id="message3">Message3</a></li>
+                <li><a href="#" id="message4">Message4</a></li>
+            </ul>
+            
+            </form>
+        </div>
+        <div id="floaty_success" class="floaty">
+            <br />
+            SUCCESS<br /><br />
+            Your message has been sent<br />
+            <br/>
+            <ul class="individual_floaty_button">
+                <li><a href="#" id="hidefloaty">Close</a></li>
+               
+            </ul>
+        </div>
+        <div id="floaty_error" class="floaty">
+            <br />
+            ERROR<br /><br />
+            There's an error processing your request.<br />
+            Retry again <br/>
+            <ul class="individual_floaty_button">
+                <li><a href="#" id="hidefloaty">Close</a></li>
+               
+            </ul>
+        </div>
+<script>
+$(function(){
+    
+    $('#togglefloaty').click(function(){
+        $('.floaty').toggleFloaty();
+        $(this).removeClass('active');
+        return false;
+    });
+
+    $('#hidefloaty').click(function(){
+        $('.floaty').hideFloaty();
+        $(this).removeClass('active');
+        location.reload();
+        return false;
+    });
+    
+    $('.floaty').makeFloaty({
+        spacing: 20,
+        time: '1s'
+    });
+
+});
+$('ul.individual_1_button > li > a').click(function() {
+    
+    message =$(this)[0].innerHTML;
+
+    send_message(message)
+});
+function send_message(message){
+    $.ajax({
+        type: "POST",
+        url: "messages/",
+        data:({"message":message}),
+        success:function(result){          
+    	   $('#floaty_success').css('visibility', 'visible');
+        },
+        error: function(xhr, status, error) {
+            $('#floaty_error').css('visibility', 'visible');
+        }
+        
+    });
+}
+</script>        
+{% endblock %}
